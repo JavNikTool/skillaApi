@@ -1,0 +1,8 @@
+<?php
+
+declare(strict_types=1);
+
+use Illuminate\Support\Facades\Route;
+
+Route::prefix('passport')->group(base_path('routes/api/v1/passport.php'));
+

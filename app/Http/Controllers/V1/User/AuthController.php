@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\V1\User;
 
-use App\Actions\User\CreateTokenUser;
 use App\Actions\User\AuthUser;
+use App\Actions\User\CreateTokenUser;
+use App\Exceptions\Database\RecordNotFoundException;
 use App\Exceptions\Token\TokenNotCreatedException;
-use App\Exceptions\User\UserNotFoundException;
-use App\Http\Controllers\Controller;
+use App\Http\Controllers\V1\Base\Controller;
 use App\Http\Requests\User\LoginRequest;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -17,7 +17,7 @@ class AuthController extends Controller
 {
     /**
      * @response array{ message: "success", token: string }
-     * @throws UserNotFoundException
+     * @throws RecordNotFoundException
      * @throws TokenNotCreatedException
      * @
      */

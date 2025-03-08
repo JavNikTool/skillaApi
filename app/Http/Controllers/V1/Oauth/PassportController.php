@@ -4,11 +4,9 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\V1\Oauth;
 
-use App\Http\Controllers\Controller;
+use App\Http\Controllers\V1\Base\Controller;
 use App\Services\TokenService;
-use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Laravel\Passport\Token;
 
 class PassportController extends Controller
 {

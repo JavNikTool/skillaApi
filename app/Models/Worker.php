@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -26,4 +27,10 @@ class Worker extends Model
     {
         return $this->belongsToMany(OrderType::class, 'workers_ex_order_type');
     }
+
+    public function canPerformOrderType(int $orderTypeId): bool
+    {
+        return !$this->excludedOrderTypes()->where('order_type_id', $orderTypeId)->exists();
+    }
+
 }

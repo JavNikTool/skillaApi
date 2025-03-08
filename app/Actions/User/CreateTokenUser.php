@@ -17,12 +17,12 @@ class CreateTokenUser
      */
     public function __invoke(User $user): string|TokenNotCreatedException
     {
-            $token = $user->createToken($user->email)->accessToken;
+        $token = $user->createToken($user->email)->accessToken;
 
-            if (!$token) {
-                throw new TokenNotCreatedException('token could not be created');
-            }
+        if (!$token) {
+            throw new TokenNotCreatedException('token could not be created');
+        }
 
-            return $token;
+        return $token;
     }
 }

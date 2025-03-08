@@ -1,20 +1,19 @@
 <?php
 
-declare(strict_types=1);
-
 namespace App\Providers;
 
+use App\Contracts\Repositories\TokenRepositoryInterface;
+use App\Repositories\PassportTokenRepository;
 use Illuminate\Support\ServiceProvider;
-use Laravel\Passport\Passport;
 
-class PassportServiceProvider extends ServiceProvider
+class AuthServiceProvider extends ServiceProvider
 {
     /**
      * Register services.
      */
     public function register(): void
     {
-        Passport::ignoreRoutes();
+        $this->app->bind(TokenRepositoryInterface::class, PassportTokenRepository::class);
     }
 
     /**
@@ -22,7 +21,6 @@ class PassportServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        Passport::hashClientSecrets();
-        Passport::tokensExpireIn(now()->addDay());
+        //
     }
 }

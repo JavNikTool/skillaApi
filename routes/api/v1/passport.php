@@ -2,30 +2,28 @@
 
 declare(strict_types=1);
 
+use App\Http\Controllers\V1\Oauth\PassportController;
+use App\Http\Middleware\CheckTokenOwnership;
 use Illuminate\Support\Facades\Route;
-use Laravel\Passport\Http\Controllers\AccessTokenController;
-use Laravel\Passport\Http\Controllers\AuthorizedAccessTokenController;
-use Laravel\Passport\Http\Controllers\ClientController;
-use Laravel\Passport\Http\Controllers\PersonalAccessTokenController;
-use Laravel\Passport\Http\Controllers\ScopeController;
-use Laravel\Passport\Http\Controllers\TransientTokenController;
 
-Route::group([
-    'namespace' => '\Laravel\Passport\Http\Controllers',
-], function () {
-    Route::post('token', [AccessTokenController::class, 'issueToken']);
-    Route::post('token/refresh', [TransientTokenController::class, 'refresh']);
-    Route::get('tokens', [AuthorizedAccessTokenController::class, 'forUser']);
-    Route::delete('tokens/{token_id}', [AuthorizedAccessTokenController::class, 'destroy']);
-
-    Route::get('clients', [ClientController::class, 'forUser']);
-    Route::post('clients', [ClientController::class, 'store']);
-    Route::put('clients/{client_id}', [ClientController::class, 'update']);
-    Route::delete('clients/{client_id}', [ClientController::class, 'destroy']);
-
-    Route::get('scopes', [ScopeController::class, 'all']);
-
-    Route::get('personal-access-tokens', [PersonalAccessTokenController::class, 'forUser']);
-    Route::post('personal-access-tokens', [PersonalAccessTokenController::class, 'store']);
-    Route::delete('personal-access-tokens/{token_id}', [PersonalAccessTokenController::class, 'destroy']);
+Route::middleware(['guest', 'throttle:60'])->group(function () {
+    Route::post('token', [PassportController::class, 'issueToken']);
+    Route::post('token/refresh', [PassportController::class, 'refreshToken']);
+    Route::get('scopes', [PassportController::class, 'listScopes']);
 });
+
+Route::middleware(['auth:api', 'throttle:60'])->group(function () {
+    Route::get('tokens', [PassportController::class, 'listTokens']);
+    Route::delete('tokens/{token_id}', [PassportController::class, 'revokeToken'])
+        ->middleware(CheckTokenOwnership::class);
+
+    Route::get('clients', [PassportController::class, 'listClients']);
+    Route::post('clients', [PassportController::class, 'createClient']);
+    Route::put('clients/{client_id}', [PassportController::class, 'updateClient']);
+    Route::delete('clients/{client_id}', [PassportController::class, 'deleteClient']);
+
+    Route::get('personal-access-tokens', [PassportController::class, 'listPersonalAccessTokens']);
+    Route::post('personal-access-tokens', [PassportController::class, 'createPersonalAccessToken']);
+    Route::delete('personal-access-tokens/{token_id}', [PassportController::class, 'revokePersonalAccessToken']);
+});
+

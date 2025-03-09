@@ -16,7 +16,7 @@ use Illuminate\Http\Request;
 class AuthController extends Controller
 {
     /**
-     * user authentication
+     * worker authentication
      * @response array{ message: "success", token: string }
      * @throws RecordNotFoundException
      * @throws TokenNotCreatedException|RecordNotFoundException

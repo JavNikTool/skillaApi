@@ -10,7 +10,8 @@ use Laravel\Passport\Token;
 
 class PassportTokenRepository implements TokenRepositoryInterface
 {
-    public function revokeToken(string $token_id): void {
+    public function revokeToken(string $token_id): void
+    {
         Token::query()
             ->find($token_id)
             ->revoke();

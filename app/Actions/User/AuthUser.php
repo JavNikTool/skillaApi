@@ -30,7 +30,7 @@ class AuthUser
         if (!$user || !Hash::check($data['password'], $user->password)) {
             throw new RecordNotFoundException('User could not be found');
         }
-        session()->put('user_id', $user->id);
+
         return $user;
     }
 }

@@ -1,21 +1,30 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Services;
 
 use App\Contracts\Services\WorkerServiceInterface;
+use App\Exceptions\Database\DatabaseQueryException;
 use App\Exceptions\Worker\FilterWorkersException;
 use App\Repositories\WorkerRepository;
 use Illuminate\Support\Collection;
 
 class WorkerService implements WorkerServiceInterface
 {
-    public function __construct(protected WorkerRepository $repository) {}
+    public function __construct(protected WorkerRepository $repository)
+    {
+    }
 
     /**
-     * @throws FilterWorkersException
+     * @throws DatabaseQueryException
      */
-    public function filterWorkersByOrderTypes(array $orderTypeIds): Collection
+    public function getWorkers(array $orderTypeIds): Collection
     {
-        return $this->repository->filterByOrderTypes($orderTypeIds);
+        if (!$orderTypeIds) {
+            return $this->repository->getWorkers($orderTypeIds);
+        }
+
+        return $this->repository->getWorkersExcludedForOrderTypes($orderTypeIds);
     }
 }

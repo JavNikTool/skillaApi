@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Requests\Worker;
 
 use Illuminate\Contracts\Validation\ValidationRule;
@@ -25,7 +27,7 @@ class FilterRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'order_type_ids' => 'required|array',
+            'order_type_ids' => 'nullable|array',
             'order_type_ids.*' => 'integer|exists:order_types,id',
         ];
     }
@@ -33,7 +35,6 @@ class FilterRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'order_type_ids.required' => 'Поле order_type_ids обязательно для заполнения.',
             'order_type_ids.array' => 'Поле order_type_ids должно быть массивом.',
             'order_type_ids.*.integer' => 'Каждый элемент в order_type_ids должен быть целым числом.',
             'order_type_ids.*.exists' => 'Переданный тип заказа не существуют.',

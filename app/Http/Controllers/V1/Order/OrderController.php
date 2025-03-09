@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Controllers\V1\Order;
 
 use App\Exceptions\Database\RecordNotCreatedException;

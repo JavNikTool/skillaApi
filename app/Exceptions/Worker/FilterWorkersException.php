@@ -1,9 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Exceptions\Worker;
 
 use App\Exceptions\Base\JsonException;
-use Exception;
 
 class FilterWorkersException extends JsonException
 {

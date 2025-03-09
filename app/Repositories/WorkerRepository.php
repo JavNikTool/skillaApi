@@ -1,30 +1,55 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Repositories;
 
 use App\Contracts\Repositories\WorkerRepositoryInterface;
+use App\Exceptions\Database\DatabaseQueryException;
 use App\Exceptions\Worker\FilterWorkersException;
 use App\Models\Worker;
+use Illuminate\Database\QueryException;
 use Illuminate\Support\Collection;
 
 class WorkerRepository implements WorkerRepositoryInterface
 {
-    public function __construct(protected Worker $model){}
+    public function __construct(protected Worker $model)
+    {
+    }
 
 
     /**
-     * @throws FilterWorkersException
+     * @throws DatabaseQueryException
      */
-    public function filterByOrderTypes(array $orderTypeIds): Collection
+    public function getWorkers(array $orderTypeIds): Collection
     {
-        if (empty($orderTypeIds)) {
-            throw new FilterWorkersException('Массив order_type_ids не может быть пустым.');
+        try {
+            return $this->model->query()
+                ->orderByDesc('id')
+                ->get();
+        } catch (QueryException $exception) {
+            throw new DatabaseQueryException();
         }
+    }
 
-        $excludedWorkerIds = $this->model->query()->whereHas('excludedOrderTypes', function ($query) use ($orderTypeIds) {
-            $query->whereIn('order_type_id', $orderTypeIds);
-        }, '=', count($orderTypeIds))->pluck('id');
+    /**
+     * @throws DatabaseQueryException
+     */
+    public function getWorkersExcludedForOrderTypes(array $orderTypeIds): Collection
+    {
+        try {
+            $excludedWorkerIds = $this->model->query()
+                ->whereHas('excludedOrderTypes', function ($query) use ($orderTypeIds) {
+                    $query->whereIn('order_type_id', $orderTypeIds);
+                }, '=', count($orderTypeIds))
+                ->pluck('id');
 
-        return $this->model->query()->whereNotIn('id', $excludedWorkerIds)->get();
+            return $this->model->query()
+                ->whereNotIn('id', $excludedWorkerIds)
+                ->orderByDesc('id')
+                ->get();
+        } catch (QueryException $e) {
+            throw new DatabaseQueryException();
+        }
     }
 }

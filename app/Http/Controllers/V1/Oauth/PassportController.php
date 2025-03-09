@@ -11,28 +11,61 @@ use Illuminate\Http\Request;
 class PassportController extends Controller
 {
     protected TokenService $tokenService;
+
     public function __construct(TokenService $tokenService)
     {
         $this->tokenService = $tokenService;
     }
-    public function issueToken() {}
-    public function refreshToken() {}
 
-    public function listTokens(Request $request) {
+    public function listTokens(Request $request)
+    {
         $tokens = $this->tokenService->listTokens($request->user()->id);
         return $this->successResponse(['tokens' => $tokens]);
     }
-    public function revokeToken(Request $request, string $token_id) {
+
+    public function revokeToken(Request $request, string $token_id)
+    {
         $this->tokenService->revokeToken($token_id);
         return $this->successResponse(['message' => 'token revoked']);
     }
 
-    public function listClients() {}
-    public function createClient() {}
-    public function updateClient() {}
-    public function deleteClient() {}
-    public function listScopes() {}
-    public function listPersonalAccessTokens() {}
-    public function createPersonalAccessToken() {}
-    public function revokePersonalAccessToken() {}
+    public function issueToken()
+    {
+    }
+
+    public function refreshToken()
+    {
+    }
+
+    public function listClients()
+    {
+    }
+
+    public function createClient()
+    {
+    }
+
+    public function updateClient()
+    {
+    }
+
+    public function deleteClient()
+    {
+    }
+
+    public function listScopes()
+    {
+    }
+
+    public function listPersonalAccessTokens()
+    {
+    }
+
+    public function createPersonalAccessToken()
+    {
+    }
+
+    public function revokePersonalAccessToken()
+    {
+    }
 }

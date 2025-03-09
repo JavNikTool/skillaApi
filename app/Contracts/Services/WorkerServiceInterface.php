@@ -1,10 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Contracts\Services;
 
 use Illuminate\Support\Collection;
 
 interface WorkerServiceInterface
 {
-    public function filterWorkersByOrderTypes(array $orderTypeIds): Collection;
+    public function getWorkers(array $orderTypeIds): Collection;
 }

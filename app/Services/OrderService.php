@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Services;
 
 use App\Contracts\Repositories\ResourceRepositoryInterface;
@@ -12,7 +14,9 @@ use App\Repositories\OrderRepository;
 
 class OrderService implements ResourceServiceInterface
 {
-    public function __construct(public OrderRepository $repository){}
+    public function __construct(public OrderRepository $repository)
+    {
+    }
 
     /**
      * @throws RecordNotCreatedException
@@ -29,7 +33,7 @@ class OrderService implements ResourceServiceInterface
     {
         $worker = Worker::query()->find($workerId);
 
-        if(!$worker->canPerformOrderType($order->order_type_id)) {
+        if (!$worker->canPerformOrderType($order->order_type_id)) {
             throw new WorkerCannotPerformOrderTypeException('Исполнитель отказался от этого типа заказа');
         }
 

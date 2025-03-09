@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Services;
 
-use App\Contracts\Repositories\ResourceRepositoryInterface;
 use App\Contracts\Services\ResourceServiceInterface;
+use App\Exceptions\Database\DatabaseQueryException;
 use App\Exceptions\Database\RecordNotCreatedException;
 use App\Exceptions\Order\WorkerCannotPerformOrderTypeException;
 use App\Models\Order;
@@ -27,9 +27,9 @@ class OrderService implements ResourceServiceInterface
     }
 
     /**
-     * @throws WorkerCannotPerformOrderTypeException
+     * @throws WorkerCannotPerformOrderTypeException|DatabaseQueryException
      */
-    public function assignWorker(Order $order, int $workerId): Order
+    public function assignWorker(Order $order, int $workerId): void
     {
         $worker = Worker::query()->find($workerId);
 
@@ -38,7 +38,13 @@ class OrderService implements ResourceServiceInterface
         }
 
         $this->repository->assignWorker($order, $workerId, $order->amount);
+    }
 
-        return $order;
+    /**
+     * @throws DatabaseQueryException
+     */
+    public function updateStatus(Order $order, string $status): void
+    {
+         $this->repository->updateStatus($order, $status);
     }
 }

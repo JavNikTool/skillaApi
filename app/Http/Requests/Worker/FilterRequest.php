@@ -4,21 +4,14 @@ declare(strict_types=1);
 
 namespace App\Http\Requests\Worker;
 
+use App\Http\Requests\Base\BaseFormRequest;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
 
-class FilterRequest extends FormRequest
+class FilterRequest extends BaseFormRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     */
-    public function authorize(): bool
-    {
-        return true;
-    }
-
     /**
      * Get the validation rules that apply to the request.
      *
@@ -39,16 +32,5 @@ class FilterRequest extends FormRequest
             'order_type_ids.*.integer' => 'Каждый элемент в order_type_ids должен быть целым числом.',
             'order_type_ids.*.exists' => 'Переданный тип заказа не существуют.',
         ];
-    }
-
-    protected function failedValidation(Validator $validator): HttpResponseException
-    {
-        throw new HttpResponseException(
-            response()->json([
-                'success' => false,
-                'message' => 'Validation errors',
-                'errors' => $validator->errors(),
-            ], 422)
-        );
     }
 }

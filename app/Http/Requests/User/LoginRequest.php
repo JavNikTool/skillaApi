@@ -4,20 +4,14 @@ declare(strict_types=1);
 
 namespace App\Http\Requests\User;
 
+use App\Http\Requests\Base\BaseFormRequest;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
 
-class LoginRequest extends FormRequest
+class LoginRequest extends BaseFormRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     */
-    public function authorize(): bool
-    {
-        return true;
-    }
 
     /**
      * Get the validation rules that apply to the request.
@@ -41,11 +35,4 @@ class LoginRequest extends FormRequest
         ];
     }
 
-    protected function failedValidation(Validator $validator): HttpResponseException
-    {
-        throw new HttpResponseException(response()->json([
-            'status' => 'error',
-            'errors' => $validator->errors(),
-        ], 422));
-    }
 }

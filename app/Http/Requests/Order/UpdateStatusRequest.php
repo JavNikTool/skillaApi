@@ -1,16 +1,12 @@
 <?php
 
-declare(strict_types=1);
-
 namespace App\Http\Requests\Order;
 
 use App\Http\Requests\Base\BaseFormRequest;
 use Illuminate\Contracts\Validation\ValidationRule;
-use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Http\Exceptions\HttpResponseException;
 
-class AssignWorkerRequest extends BaseFormRequest
+class UpdateStatusRequest extends BaseFormRequest
 {
 
     /**
@@ -21,16 +17,15 @@ class AssignWorkerRequest extends BaseFormRequest
     public function rules(): array
     {
         return [
-            'worker_id' => 'required|exists:workers,id',
+            'status' => 'required|in:Создан,назначен исполнитель,завершен',
         ];
     }
 
     public function messages(): array
     {
         return [
-            'worker_id.required' => 'Поле исполнитель обязательно для заполнения',
-            'worker_id.exists' => 'Такого исполнителя не существует',
+            'status.required' => 'Поле статус обязательно для заполнения',
+            'status.in' => 'Статус должен быть одним из следующих значений: Создан, назначен исполнитель, завершен',
         ];
     }
-
 }

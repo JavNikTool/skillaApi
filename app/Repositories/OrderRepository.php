@@ -5,8 +5,10 @@ declare(strict_types=1);
 namespace App\Repositories;
 
 use App\Contracts\Repositories\ResourceRepositoryInterface;
+use App\Exceptions\Database\DatabaseQueryException;
 use App\Exceptions\Database\RecordNotCreatedException;
 use App\Models\Order;
+use Illuminate\Database\QueryException;
 
 class OrderRepository implements ResourceRepositoryInterface
 {
@@ -29,14 +31,33 @@ class OrderRepository implements ResourceRepositoryInterface
         }
     }
 
+    /**
+     * @throws DatabaseQueryException
+     */
     public function assignWorker(Order $order, int $workerId, float $amount): void
     {
-        $order->workers()->attach($workerId, [
-            'amount' => $amount,
-            'created_at' => now(),
-            'updated_at' => now(),
-        ]);
+        try {
+            $order->workers()->attach($workerId, [
+                'amount' => $amount,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]);
 
-        $order->update(['status' => 'назначен исполнитель']);
+            $order->update(['status' => 'назначен исполнитель']);
+        } catch (QueryException $e) {
+            throw new DatabaseQueryException();
+        }
+    }
+
+    /**
+     * @throws DatabaseQueryException
+     */
+    public function updateStatus(Order $order, string $status): void
+    {
+        try {
+            $order->update(['status' => $status]);
+        } catch (QueryException $e) {
+            throw new DatabaseQueryException();
+        }
     }
 }

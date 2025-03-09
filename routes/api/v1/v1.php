@@ -19,6 +19,7 @@ Route::middleware(['auth:api', 'throttle:60'])->group(function () {
 
     Route::prefix('orders')->group(function () {
         Route::post('/', [OrderController::class, 'store']);
+        Route::put('/{order}/status', [OrderController::class, 'updateStatus']);
         Route::post('/{order}/assign-worker', [OrderController::class, 'assignWorker']);
     });
 

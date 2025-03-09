@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace App\Services;
 
 use App\Contracts\Services\ResourceServiceInterface;
+use App\Events\OrderStatusUpdated;
+use App\Events\WorkerAssignedToOrder;
 use App\Exceptions\Database\DatabaseQueryException;
 use App\Exceptions\Database\RecordNotCreatedException;
 use App\Exceptions\Order\WorkerCannotPerformOrderTypeException;

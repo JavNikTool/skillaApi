@@ -1,4 +1,4 @@
-<?php
+ <?php
 
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Route;
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
         health: '/up',
+        channels: __DIR__. '/../routes/channels.php',
         then: function () {
             Route::middleware('api')
                 ->prefix('api/v1')

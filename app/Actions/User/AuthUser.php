@@ -28,7 +28,7 @@ class AuthUser
         }
 
         if (!$user || !Hash::check($data['password'], $user->password)) {
-            throw new RecordNotFoundException('User could not be found');
+            throw new RecordNotFoundException('Пользователь не найден.');
         }
 
         return $user;

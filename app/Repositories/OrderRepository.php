@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace App\Repositories;
 
 use App\Contracts\Repositories\ResourceRepositoryInterface;
+use App\Events\OrderStatusUpdated;
+use App\Events\WorkerAssignedToOrder;
 use App\Exceptions\Database\DatabaseQueryException;
 use App\Exceptions\Database\RecordNotCreatedException;
 use App\Models\Order;
@@ -44,6 +46,8 @@ class OrderRepository implements ResourceRepositoryInterface
             ]);
 
             $order->update(['status' => 'назначен исполнитель']);
+
+            broadcast(New WorkerAssignedToOrder($order, $workerId));
         } catch (QueryException $e) {
             throw new DatabaseQueryException();
         }
@@ -56,6 +60,8 @@ class OrderRepository implements ResourceRepositoryInterface
     {
         try {
             $order->update(['status' => $status]);
+
+            broadcast(new OrderStatusUpdated($order, $status));
         } catch (QueryException $e) {
             throw new DatabaseQueryException();
         }

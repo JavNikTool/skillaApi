@@ -16,6 +16,7 @@ use Illuminate\Http\Request;
 class AuthController extends Controller
 {
     /**
+     * user authentication
      * @response array{ message: "success", token: string }
      * @throws RecordNotFoundException
      * @throws TokenNotCreatedException
@@ -36,6 +37,10 @@ class AuthController extends Controller
         ]);
     }
 
+    /**
+     * @param Request $request
+     * @return JsonResponse
+     */
     public function logout(Request $request): JsonResponse
     {
         $request->user()->token()->revoke();

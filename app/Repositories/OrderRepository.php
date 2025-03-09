@@ -47,6 +47,7 @@ class OrderRepository implements ResourceRepositoryInterface
 
             $order->update(['status' => 'назначен исполнитель']);
 
+
             broadcast(New WorkerAssignedToOrder($order, $workerId));
         } catch (QueryException $e) {
             throw new DatabaseQueryException();

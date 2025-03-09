@@ -30,7 +30,7 @@ class OrderController extends CrudController
         $data = $request->validated();
         $order = $this->service->create($data);
 
-        return $this->successResponse(['order_id' => $order->id]);
+        return $this->successResponse(['order_id' => $order->id], 201);
     }
 
     /**

@@ -16,7 +16,7 @@ class OrderStatusUpdated implements ShouldBroadcast
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
     public Order $order;
-    public int $status;
+    public string $status;
 
     /**
      * Create a new event instance.

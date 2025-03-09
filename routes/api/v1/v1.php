@@ -12,9 +12,6 @@ use Illuminate\Support\Facades\Route;
 Route::middleware(['guest', 'throttle:60'])->group(function () {
     Route::post('login', [AuthController::class, 'login']);
     Route::post('/worker/login', [WorkerAuthController::class, 'login']);
-    Route::get('/', function () {
-        return 'test';
-    });
 });
 
 Route::middleware(['auth:api', 'throttle:60'])->group(function () {

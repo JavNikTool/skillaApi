@@ -2,7 +2,7 @@
 
 ## Установка
 
-* Клонируем репозиторий командой `git clone https://github.com/sergey-kiryanov/worker.git`
+* Клонируем репозиторий командой `git clone https://github.com/JavNikTool/skillaApi`
 * Переходим в директорию с проектом
 * Устанавливаем зависимости `composer install`
 * Копируем `.env.example` в `.env`

@@ -8,8 +8,8 @@ use Illuminate\Support\Facades\Route;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
+        channels: __DIR__ . '/../routes/channels.php',
         health: '/up',
-        channels: __DIR__. '/../routes/channels.php',
         then: function () {
             Route::middleware('api')
                 ->prefix('api/v1')

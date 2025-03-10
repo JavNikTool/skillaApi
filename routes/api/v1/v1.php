@@ -32,8 +32,4 @@ Route::middleware(['auth:worker', 'throttle:60'])->group(function () {
     Route::post('logout', [WorkerAuthController::class, 'logout']);
 });
 
-Route::post('/broadcasting/auth', function () {
-    return Broadcast::auth(request());
-})->middleware('auth:worker');
-
 Route::prefix('passport')->group(base_path('routes/api/v1/passport.php'));
